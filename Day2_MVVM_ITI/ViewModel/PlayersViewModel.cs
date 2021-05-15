@@ -3,6 +3,7 @@ using Day2_MVVM_ITI.Services;
 using Day2_MVVM_ITI.Utility;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -13,15 +14,16 @@ namespace Day2_MVVM_ITI.ViewModel
 {
     public class PlayersViewModel : INotifyPropertyChanged
     {
-        List<Player> players;
+        ObservableCollection<Player> players;
         Player player;
 
         IPlayersService playersService;
 
-        ICommand editCmd;
+      
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        ICommand editCmd;
         public ICommand EditCmd
         {
             get
@@ -49,6 +51,7 @@ namespace Day2_MVVM_ITI.ViewModel
             // MessageBox.Show(obj.ToString());
             ShDialog.ShowDialog();
             Messenger.Default.Send<Player>(SelectedPlayer);
+            
 
 
         }
@@ -66,7 +69,7 @@ namespace Day2_MVVM_ITI.ViewModel
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SelectedPlayer"));
             }
         }
-        public List<Player> Players { get => players ?? (players = playersService.GetAll()); } 
+        public ObservableCollection<Player> Players { get => players ?? (players = new ObservableCollection<Player>( playersService.GetAll())); } 
 
         public Player Player { get => player ?? (player = playersService.GetPlayer(1)); }
 

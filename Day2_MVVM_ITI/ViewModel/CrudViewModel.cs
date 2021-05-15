@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Day2_MVVM_ITI.ViewModel
 {
@@ -25,6 +26,9 @@ namespace Day2_MVVM_ITI.ViewModel
         {
             playersService = _playersService;
             Messenger.Default.Register<Player>(this, OnRecieved);
+            //initialize both commands 
+            UpdateCmd = new EditCommand(onUpdate, canUpdate);
+            DeleteCmd = new EditCommand(onDelete, canDelete);
 
 
         }
@@ -38,9 +42,54 @@ namespace Day2_MVVM_ITI.ViewModel
             {
                 selectedPlayer = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SelectedPlayer"));
+                //playersService.Edit(selectedPlayer);
             }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        ICommand updateCmd;
+        public ICommand UpdateCmd
+        {
+            get => updateCmd;
+            set
+            {
+                updateCmd = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("UpdateCmd"));
+            }
+        }
+
+        ICommand deleteCmd;
+        public ICommand DeleteCmd
+        {
+            get => deleteCmd;
+            set
+            {
+                deleteCmd = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DeleteCmd"));
+            }
+        }
+
+        private void onUpdate(object obj)
+        {
+            playersService.Edit(selectedPlayer);
+        }
+        private bool canUpdate(object obj)
+        {
+            return true;
+        }
+
+        private void onDelete(object obj)
+        {
+            playersService.Delete(selectedPlayer.Id);
+            //selectedPlayer = null;
+        }
+        private bool canDelete(object obj)
+        {
+            return true;
+        }
+
+
+
     }
 }

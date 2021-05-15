@@ -55,7 +55,7 @@ namespace Day2_MVVM_ITI.Services
         private void PutPlayerData(Player player)
         {
             var ser = JsonConvert.SerializeObject(player);
-            var response = client.PostAsync(
+            var response = client.PutAsync(
                     baseAddress+player.Id, new StringContent(ser, Encoding.Default, "application/json")).Result; //Default
         }
 
