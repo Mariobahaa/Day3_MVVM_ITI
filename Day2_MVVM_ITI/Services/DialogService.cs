@@ -8,16 +8,16 @@ using System.Windows;
 
 namespace Day2_MVVM_ITI
 {
- public   class DialogService
+ public  static class DialogService
     {
-        Window Dialog = null;
-        public void ShowDialog()
+        static Window Dialog = null;
+        public static void ShowDialog()
         {
             Dialog = new DetailsView();
             Dialog.Show();
         }
 
-        public void Close()
+        public static void Close()
         {
             if(Dialog !=null)
             Dialog.Close();

@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Day2_MVVM_ITI.ViewModel
@@ -81,7 +82,16 @@ namespace Day2_MVVM_ITI.ViewModel
 
         private void onDelete(object obj)
         {
-            playersService.Delete(selectedPlayer.Id);
+            var Result = MessageBox.Show("Are you sure you want to delete this player?", "Delete Player", MessageBoxButton.YesNo);
+            if (Result == MessageBoxResult.Yes)
+            {
+                playersService.Delete(selectedPlayer.Id);
+                Messenger.Default.Send<int>(selectedPlayer.Id); //send a message to subsrcibers, to delete this player
+                selectedPlayer = null;
+
+                DialogService.Close();
+            }
+
             //selectedPlayer = null;
         }
         private bool canDelete(object obj)

@@ -38,7 +38,13 @@ namespace Day2_MVVM_ITI.ViewModel
         {
             this.playersService = playersService;
             editCmd= new EditCommand(OnEdit, CanEdit);
-            ShDialog = new DialogService();
+            Messenger.Default.Register<int>(this, Delete);
+            //ShDialog = new DialogService();
+        }
+
+        private void Delete(int id)
+        {
+            players.Remove((Player)(players.Where(P => P.Id == id).FirstOrDefault()));
         }
 
         private bool CanEdit(object obj)
@@ -49,14 +55,15 @@ namespace Day2_MVVM_ITI.ViewModel
         private void OnEdit(object obj)
         {
             // MessageBox.Show(obj.ToString());
-            ShDialog.ShowDialog();
+            //ShDialog.ShowDialog();
+            DialogService.ShowDialog();
             Messenger.Default.Send<Player>(SelectedPlayer);
             
 
 
         }
 
-        public DialogService ShDialog { get; set; }
+        //public DialogService ShDialog { get; set; }
 
         Player selectedPlayer;
         public Player SelectedPlayer
